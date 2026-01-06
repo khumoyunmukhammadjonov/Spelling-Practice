@@ -1,412 +1,858 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎬 Movie Night Hub! 🍿</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #0f0c29;
-            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
-            min-height: 100vh;
-            color: #fff;
-        }
-
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0.4;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0));
-            background-size: 200px 200px;
-            animation: stars 4s linear infinite;
-        }
-
-        @keyframes stars {
-            from { transform: translateY(0); }
-            to { transform: translateY(-200px); }
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            position: relative;
-        }
-
-        h1 {
-            font-size: 3.5em;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(78, 205, 196, 0.2);
-        }
-
-        .movie-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            margin-bottom: 40px;
-            transform: translateY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .movie-container:hover {
-            transform: translateY(-5px);
-        }
-
-        #movie-title {
-            font-size: 2.2em;
-            color: #fff;
-            margin-bottom: 20px;
-            text-align: center;
-            text-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
-        }
-
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            background: #000;
-        }
-
-        #movie-player {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            border: none;
-        }
-
-        .admin-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-
-        .admin-panel h3 {
-            color: #4ECDC4;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 15px rgba(78, 205, 196, 0.3);
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        button {
-            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 10px 0;
-            width: 100%;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
-        }
-
-.refresh-btn {
-    margin-top: 15px;
-    background: linear-gradient(45deg, #4ECDC4, #556270);
-    width: auto;
-    padding: 10px 20px;
-}
-
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(78, 205, 196, 0.4);
-        }
-
-        .delete-btn {
-            background: linear-gradient(45deg, #FF6B6B, #ff4444);
-        }
-
-        .emoji-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .emoji {
-            font-size: 2.5em;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .emoji:nth-child(2) {
-            animation-delay: 0.5s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .status-message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 10px;
-            background: rgba(78, 205, 196, 0.9);
-            color: white;
-            transform: translateX(200%);
-            transition: transform 0.3s ease;
-            z-index: 1001;
-        }
-
-        .status-message.show {
-            transform: translateX(0);
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 2.5em;
-            }
-
-            .movie-container, .admin-panel {
-                padding: 20px;
-            }
-
-            .emoji {
-                font-size: 2em;
-            }
-        }
-    </style>
-    <script>
-const STORAGE_KEY = 'movieNightHub_v3';
-let currentVideoId = null;
-
-function saveMovieData(title, videoId) {
-    const movieData = {
-        title: title,
-        videoId: videoId,
-        timestamp: Date.now()
-    };
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(movieData));
-        showMessage('Movie updated successfully! 🎬✨ Tell your friends to refresh!');
-    } catch (error) {
-        console.error('Error saving movie data:', error);
-        showMessage('Error saving movie! Please try again.');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spelling Practice</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-}
-
-function loadMovieData() {
-    try {
-        const savedData = localStorage.getItem(STORAGE_KEY);
-        if (savedData) {
-            const movieData = JSON.parse(savedData);
-            updateMovieDisplay(movieData.title, movieData.videoId);
-        }
-    } catch (error) {
-        console.error('Error loading movie data:', error);
-    }
-}
-
-function updateMovie() {
-    const newTitle = document.getElementById('new-title').value;
-    const newUrl = document.getElementById('new-url').value;
     
-    if (!newTitle || !newUrl) {
-        showMessage('Please enter both title and URL! 🎯');
-        return;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
-    const videoId = extractGoogleDriveFileId(newUrl);
-    if (!videoId) {
-        showMessage('Invalid Google Drive URL! Please check the link 🔍');
-        return;
+    
+    .container {
+      width: 90%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      position: relative;
     }
-
-    saveMovieData(newTitle, videoId);
-    updateMovieDisplay(newTitle, videoId);
-
-    // Clear inputs
-    document.getElementById('new-title').value = '';
-    document.getElementById('new-url').value = '';
-    document.getElementById('admin-password').value = '';
-    document.getElementById('admin-controls').style.display = 'none';
-}
-
-function deleteMovie() {
-    if (confirm('Are you sure you want to delete this movie?')) {
-        try {
-            localStorage.removeItem(STORAGE_KEY);
-            updateMovieDisplay('No movie playing right now', null);
-            showMessage('Movie deleted successfully! 🗑️ Tell your friends to refresh!');
-        } catch (error) {
-            console.error('Error deleting movie:', error);
-            showMessage('Error deleting movie! Please try again.');
-        }
+    
+    @media (max-width: 768px) {
+      .container {
+        width: 95%;
+        padding: 20px;
+      }
+      
+      .title {
+        font-size: 24px;
+      }
+      
+      .stat-value {
+        font-size: 18px;
+      }
+      
+      .letter-display {
+        font-size: 100px;
+        height: 120px;
+      }
+      
+      .countdown {
+        font-size: 80px;
+      }
+      
+      .level-number {
+        font-size: 36px;
+      }
+      
+      .level-name {
+        font-size: 16px;
+      }
+      
+      .name-input {
+        font-size: 20px;
+        padding: 12px 20px;
+      }
     }
-}
-
-function updateMovieDisplay(title, videoId) {
-    document.getElementById('movie-title').textContent = title;
-    const player = document.getElementById('movie-player');
-    if (videoId) {
-        // Added quality parameter for data saving
-        player.src = `https://drive.google.com/file/d/${videoId}/preview?quality=medium`;
-    } else {
-        player.src = '';
+    
+    @media (max-width: 480px) {
+      .header {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .stats {
+        gap: 15px;
+      }
+      
+      .level-grid {
+        grid-template-columns: 1fr;
+      }
     }
-    currentVideoId = videoId;
-}
-
-function changeQuality(quality) {
-    const player = document.getElementById('movie-player');
-    if (currentVideoId) {
-        player.src = `https://drive.google.com/file/d/${currentVideoId}/preview?quality=${quality}`;
-        showMessage(`Quality changed to ${quality} 🎥`);
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
     }
-}
-
-function extractGoogleDriveFileId(url) {
-    const regex = /\/d\/(.*?)(\/?$|\/view|\?|&)/;
-    const match = url.match(regex);
-    return match ? match[1] : null;
-}
-
-function showMessage(message) {
-    const statusMessage = document.getElementById('statusMessage');
-    statusMessage.textContent = message;
-    statusMessage.classList.add('show');
-    setTimeout(() => {
-        statusMessage.classList.remove('show');
-    }, 3000);
-}
-
-// Initialize everything when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Admin password handler
-    document.getElementById('admin-password').addEventListener('input', function(e) {
-        const adminControls = document.getElementById('admin-controls');
-        if (e.target.value === "12345") {
-            adminControls.style.display = 'block';
-            showMessage('Admin access granted! 🎉');
-        } else {
-            adminControls.style.display = 'none';
-        }
-    });
-
-    // Add refresh button to the page
-    const refreshButton = document.createElement('button');
-    refreshButton.innerHTML = '🔄 Check for New Movies';
-    refreshButton.onclick = function() {
-        location.reload();
-        showMessage('Checking for new movies... 🎬');
-    };
-    refreshButton.className = 'refresh-btn';
-    document.querySelector('.movie-container').appendChild(refreshButton);
-
-    // Load initial movie data
-    loadMovieData();
-});
-    </script>
+    
+    .title {
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .stats {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .start-screen {
+      text-align: center;
+      padding: 40px 0;
+    }
+    
+    .subtitle {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 40px;
+    }
+    
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .level-card {
+      background: white;
+      border: 3px solid #e0e0e0;
+      border-radius: 15px;
+      padding: 30px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .level-card:hover {
+      border-color: #667eea;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+    
+    .level-number {
+      font-size: 48px;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    
+    .level-name {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+    
+    .level-desc {
+      font-size: 14px;
+      color: #999;
+    }
+    
+    .game-screen {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+      min-height: 500px;
+    }
+    
+    .game-screen.expert-mode {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .countdown {
+      font-size: 120px;
+      font-weight: bold;
+      color: #667eea;
+      animation: pulse 1s ease-in-out;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    .letter-display {
+      font-size: 150px;
+      font-weight: bold;
+      color: #333;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0;
+      transition: color 0.3s ease;
+    }
+    
+    /* New Arial override for levels 1 and 2 */
+    .font-arial {
+      font-family: Arial, Helvetica, sans-serif !important;
+    }
+    
+    .letter-display.hidden {
+      visibility: hidden;
+    }
+    
+    .letter-display.hide-completely {
+      display: none;
+    }
+    
+    .letter-display.correct {
+      color: #10b981;
+    }
+    
+    .letter-display.incorrect {
+      color: #ef4444;
+    }
+    
+    .instruction {
+      font-size: 20px;
+      color: #666;
+      margin-bottom: 20px;
+    }
+    
+    .name-input {
+      font-size: 28px;
+      padding: 15px 25px;
+      border: 3px solid #e0e0e0;
+      border-radius: 10px;
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      outline: none;
+      transition: all 0.3s ease;
+      margin: 0 auto;
+      display: block;
+    }
+    
+    .name-input:focus {
+      border-color: #667eea;
+    }
+    
+    .name-input.correct {
+      border-color: #10b981;
+      color: #10b981;
+    }
+    
+    .name-input.incorrect {
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      transition: width 0.3s ease;
+      border-radius: 10px;
+    }
+    
+    .progress-text {
+      font-size: 16px;
+      color: #666;
+      margin-top: 5px;
+    }
+    
+    .result-screen {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+    
+    .result-title {
+      font-size: 48px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    
+    .result-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .result-stat {
+      background: #f3f4f6;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    
+    .result-stat-value {
+      font-size: 36px;
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .result-stat-label {
+      font-size: 14px;
+      color: #666;
+      margin-top: 5px;
+    }
+    
+    .btn {
+      padding: 15px 40px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      margin-top: 20px;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-secondary {
+      background: #e0e0e0;
+      color: #333;
+    }
+    
+    .btn-secondary:hover {
+      background: #d0d0d0;
+    }
+    
+    .loading {
+      display: none;
+      color: #666;
+      margin-top: 20px;
+    }
+    
+    .timer {
+      font-size: 28px;
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .timer.warning {
+      color: #ef4444;
+      animation: pulse 1s ease-in-out infinite;
+    }
+  </style>
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="container">
-        <div class="header">
-            <h1>Movie Night Hub</h1>
-            <div class="emoji-container">
-                <span class="emoji">🎬</span>
-                <span class="emoji">🍿</span>
-                <span class="emoji">✨</span>
-            </div>
+  <div class="container">
+    <div class="header">
+      <div class="title">Spelling Practice</div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Time</div>
+          <div class="stat-value timer" id="timer">5:00</div>
         </div>
-
-        <div class="movie-container">
-            <h2 id="movie-title">No movie playing right now</h2>
-            <div class="video-container">
-                <iframe id="movie-player" 
-                        src=""
-                        allowfullscreen
-                        allow="autoplay">
-                </iframe>
-            </div>
+        <div class="stat" id="accuracyStat" style="display: none;">
+          <div class="stat-label">Accuracy</div>
+          <div class="stat-value" id="accuracy">100%</div>
         </div>
-
-        <div class="admin-panel">
-            <h3>Admin Controls</h3>
-            <input type="password" id="admin-password" placeholder="🔒 Enter admin password">
-            <div id="admin-controls" style="display: none;">
-                <input type="text" id="new-title" placeholder="🎥 Enter movie title">
-                <input type="url" id="new-url" placeholder="🔗 Enter Google Drive URL">
-                <button onclick="updateMovie()">
-                    <i class="fas fa-film"></i> Update Movie
-                </button>
-                <button onclick="deleteMovie()" class="delete-btn">
-                    <i class="fas fa-trash"></i> Delete Movie
-                </button>
-            </div>
-        </div>
+      </div>
     </div>
+    
+    <div class="start-screen" id="startScreen">
+      <div class="subtitle">Choose your challenge level</div>
+      <div class="level-grid">
+        <div class="level-card" onclick="startGame(1)">
+          <div class="level-number">1</div>
+          <div class="level-name">Beginner</div>
+          <div class="level-desc">Visual letters</div>
+        </div>
+        <div class="level-card" onclick="startGame(2)">
+          <div class="level-number">2</div>
+          <div class="level-name">Advanced</div>
+          <div class="level-desc">Audio only</div>
+        </div>
+        <div class="level-card" onclick="startGame(3)">
+          <div class="level-number">3</div>
+          <div class="level-name">Expert</div>
+          <div class="level-desc">Spell names</div>
+        </div>
+      </div>
+      <div class="loading" id="loading">⏳ Loading names...</div>
+    </div>
+    
+    <div class="game-screen" id="gameScreen">
+      <div class="instruction" id="instruction"></div>
+      <div class="letter-display" id="letterDisplay"></div>
+      <input type="text" class="name-input" id="nameInput" placeholder="Type the name..." autocomplete="off" style="display: none;">
+      <button class="btn btn-secondary" onclick="quitGame()">Quit</button>
+    </div>
+    
+    <div class="result-screen" id="resultScreen">
+      <div class="result-title">Time's Up! 🎉</div>
+      <div class="result-stats">
+        <div class="result-stat">
+          <div class="result-stat-value" id="finalAccuracy">0%</div>
+          <div class="result-stat-label">Accuracy</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-value" id="finalCorrect">0</div>
+          <div class="result-stat-label">Correct</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-value" id="finalMistakes">0</div>
+          <div class="result-stat-label">Mistakes</div>
+        </div>
+        <div class="result-stat" id="finalNamesDiv" style="display: none;">
+          <div class="result-stat-value" id="finalNames">0</div>
+          <div class="result-stat-label">Names Completed</div>
+        </div>
+      </div>
+      <button class="btn" onclick="resetGame()">Play Again</button>
+    </div>
+  </div>
 
-    <div class="status-message" id="statusMessage"></div>
+  <audio id="errorSound" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"></audio>
+  <audio id="successSound" src="https://actions.google.com/sounds/v1/cartoon/cartoon_success_fanfare.ogg"></audio>
+
+  <script>
+    const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    let names = [];
+    let namesLoaded = false;
+    let voicesLoaded = false;
+    
+    let gameActive = false;
+    let currentLevel = 1;
+    let timeLeft = 300;
+    let timerInterval = null;
+    let correctCount = 0;
+    let mistakeCount = 0;
+    let namesCompleted = 0;
+    let acceptingInput = true;
+    
+    let currentLetter = null;
+    let currentName = null;
+    let spellingIndex = 0;
+    let spellingTimer = null;
+    let letterFrequencies = {};
+    let nameFrequencies = {};
+    
+    const elements = {
+      startScreen: document.getElementById('startScreen'),
+      gameScreen: document.getElementById('gameScreen'),
+      resultScreen: document.getElementById('resultScreen'),
+      letterDisplay: document.getElementById('letterDisplay'),
+      instruction: document.getElementById('instruction'),
+      nameInput: document.getElementById('nameInput'),
+      timer: document.getElementById('timer'),
+      accuracy: document.getElementById('accuracy'),
+      accuracyStat: document.getElementById('accuracyStat'),
+      loading: document.getElementById('loading'),
+      errorSound: document.getElementById('errorSound'),
+      successSound: document.getElementById('successSound')
+    };
+    
+    async function fetchNames() {
+      elements.loading.style.display = 'block';
+      try {
+        const response = await fetch('https://randomuser.me/api/?results=100&inc=name&nat=us,gb');
+        const data = await response.json();
+        names = data.results
+          .map(p => p.name.first)
+          .filter(n => /^[a-zA-Z]+$/.test(n))
+          .filter((n, i, arr) => arr.indexOf(n) === i);
+        
+        if (names.length < 20) {
+          names = [...new Set([...names, "Alice", "Bob", "Charlie", "David", "Emma", "Frank", "Grace", "Henry", "Jack", "Ruby"])];
+        }
+      } catch (error) {
+        names = ["Alice", "Bob", "Charlie", "David", "Emma", "Frank", "Grace", "Henry", "Jack", "Ruby"];
+      }
+      namesLoaded = true;
+      checkReady();
+    }
+    
+    function loadVoices() {
+      const voices = speechSynthesis.getVoices();
+      if (voices.length > 0 && !voicesLoaded) {
+        voicesLoaded = true;
+        checkReady();
+      }
+    }
+    
+    function checkReady() {
+      if (namesLoaded && voicesLoaded) {
+        elements.loading.style.display = 'none';
+      }
+    }
+    
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    loadVoices();
+    fetchNames();
+    
+    function speak(text) {
+      return new Promise((resolve) => {
+        speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        const voices = speechSynthesis.getVoices();
+        utterance.lang = "en-GB";
+        utterance.rate = currentLevel === 3 ? 1.0 : 0.85;
+        utterance.pitch = 1;
+        
+        const voice = voices.find(v => v.name.includes("Google UK English")) || 
+                      voices.find(v => v.name.includes("British")) ||
+                      voices.find(v => v.name.includes("Daniel")) || 
+                      voices.find(v => v.name.includes("Hazel")) ||  
+                      voices.find(v => v.lang === "en-GB") || 
+                      voices.find(v => v.lang === "en-UK") ||
+                      voices.find(v => v.lang.startsWith("en"));
+        if (voice) utterance.voice = voice;
+        utterance.onend = () => resolve();
+        utterance.onerror = () => resolve();
+        speechSynthesis.speak(utterance);
+      });
+    }
+    
+    function cleanup() {
+      gameActive = false;
+      acceptingInput = false;
+      
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      if (spellingTimer) {
+        clearTimeout(spellingTimer);
+        spellingTimer = null;
+      }
+      speechSynthesis.cancel();
+      
+      elements.errorSound.pause();
+      elements.errorSound.currentTime = 0;
+      elements.successSound.pause();
+      elements.successSound.currentTime = 0;
+    }
+    
+    async function startGame(level) {
+      if (level === 3 && !namesLoaded) return;
+      
+      cleanup();
+      await new Promise(r => setTimeout(r, 100));
+      
+      currentLevel = level;
+      elements.startScreen.style.display = 'none';
+      elements.gameScreen.style.display = level === 3 ? 'flex' : 'block';
+      
+      // APPLY ARIAL CLASS FOR LEVELS 1 AND 2
+      if (level === 1 || level === 2) {
+        elements.letterDisplay.classList.add('font-arial');
+      } else {
+        elements.letterDisplay.classList.remove('font-arial');
+      }
+
+      if (level === 3) {
+        elements.gameScreen.classList.add('expert-mode');
+      } else {
+        elements.gameScreen.classList.remove('expert-mode');
+      }
+      elements.accuracyStat.style.display = 'block';
+      elements.resultScreen.style.display = 'none';
+      
+      for (let i = 3; i > 0; i--) {
+        elements.letterDisplay.textContent = i;
+        // Keep countdown logic but maintain arial if applicable
+        elements.letterDisplay.className = 'letter-display countdown' + (level < 3 ? ' font-arial' : '');
+        elements.letterDisplay.style.display = 'flex';
+        await new Promise(r => setTimeout(r, 1000));
+      }
+      
+      elements.letterDisplay.textContent = 'GO!';
+      await new Promise(r => setTimeout(r, 500));
+      
+      elements.letterDisplay.textContent = '';
+      
+      gameActive = true;
+      acceptingInput = true;
+      timeLeft = 300;
+      correctCount = 0;
+      mistakeCount = 0;
+      namesCompleted = 0;
+      
+      if (level === 3) {
+        elements.instruction.textContent = 'Type the name as it\'s spelled out';
+        elements.instruction.style.display = 'block';
+        elements.nameInput.style.display = 'block';
+        elements.letterDisplay.style.display = 'none';
+        nameFrequencies = {};
+        names.forEach(n => nameFrequencies[n] = 0);
+        elements.nameInput.value = '';
+        elements.nameInput.className = 'name-input';
+        elements.nameInput.focus();
+        await new Promise(r => setTimeout(r, 500));
+        generateNextName();
+      } else {
+        elements.instruction.textContent = level === 1 ? 'Type the letter you see' : 'Type the letter you hear';
+        elements.instruction.style.display = 'block';
+        elements.nameInput.style.display = 'none';
+        elements.letterDisplay.style.display = 'flex';
+        elements.letterDisplay.className = 'letter-display font-arial';
+        letterFrequencies = {};
+        LETTERS.forEach(l => letterFrequencies[l] = 0);
+        generateNextLetter();
+      }
+      
+      elements.accuracy.textContent = '100%';
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        if (!gameActive) return;
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) endGame();
+      }, 1000);
+    }
+    
+    function generateNextLetter() {
+      if (!gameActive) return;
+      const minFreq = Math.min(...Object.values(letterFrequencies));
+      const candidates = LETTERS.filter(l => letterFrequencies[l] === minFreq);
+      currentLetter = candidates[Math.floor(Math.random() * candidates.length)];
+      letterFrequencies[currentLetter]++;
+      
+      if (currentLevel === 1) {
+        elements.letterDisplay.textContent = currentLetter;
+        elements.letterDisplay.className = 'letter-display font-arial';
+      } else if (currentLevel === 2) {
+        elements.letterDisplay.textContent = '';
+        elements.letterDisplay.className = 'letter-display font-arial hidden';
+      }
+      
+      speak(currentLetter);
+    }
+    
+    function generateNextName() {
+      if (!gameActive) return;
+      if (spellingTimer) {
+        clearTimeout(spellingTimer);
+        spellingTimer = null;
+      }
+      speechSynthesis.cancel();
+      isSpelling = false;
+      
+      const minFreq = Math.min(...Object.values(nameFrequencies));
+      const candidates = names.filter(n => nameFrequencies[n] === minFreq);
+      currentName = candidates[Math.floor(Math.random() * candidates.length)];
+      nameFrequencies[currentName]++;
+      spellingIndex = 0;
+      
+      setTimeout(() => {
+        if (gameActive && currentLevel === 3) {
+          isSpelling = true;
+          spellOutName();
+        }
+      }, 100);
+    }
+    
+    let isSpelling = false;
+    
+    async function spellOutName() {
+      if (!gameActive || currentLevel !== 3 || spellingIndex >= currentName.length || !isSpelling) return;
+      
+      const char = currentName[spellingIndex].toUpperCase();
+      let count = 1;
+      for (let i = spellingIndex + 1; i < currentName.length; i++) {
+        if (currentName[i].toUpperCase() === char) count++;
+        else break;
+      }
+      
+      if (count > 1) {
+        const words = ['', '', 'double', 'triple', 'quadruple'];
+        const text = count <= 4 ? `${words[count]} ${char}` : `${char} ${count} times`;
+        await speak(text);
+        if (!gameActive || currentLevel !== 3 || !isSpelling) return;
+        spellingIndex += count;
+        await new Promise(r => setTimeout(r, 150));
+      } else {
+        await speak(char);
+        if (!gameActive || currentLevel !== 3 || !isSpelling) return;
+        spellingIndex++;
+        await new Promise(r => setTimeout(r, 150));
+      }
+      
+      if (gameActive && currentLevel === 3 && spellingIndex < currentName.length && isSpelling) {
+        spellOutName();
+      }
+    }
+    
+    function updateTimerDisplay() {
+      const mins = Math.floor(timeLeft / 60);
+      const secs = timeLeft % 60;
+      elements.timer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+      elements.timer.className = timeLeft <= 30 ? 'timer warning' : 'timer';
+    }
+    
+    function updateAccuracy() {
+      const total = correctCount + mistakeCount;
+      const acc = total > 0 ? Math.round((correctCount / total) * 100) : 100;
+      elements.accuracy.textContent = acc + '%';
+    }
+    
+    document.addEventListener('keydown', (e) => {
+      if (!gameActive || !acceptingInput || currentLevel === 3) return;
+      const key = e.key.toUpperCase();
+      if (!/^[A-Z]$/.test(key)) return;
+      
+      acceptingInput = false;
+      elements.letterDisplay.textContent = key;
+      elements.letterDisplay.style.display = 'flex';
+      
+      if (key === currentLetter) {
+        correctCount++;
+        elements.letterDisplay.className = 'letter-display font-arial correct';
+        updateAccuracy();
+        setTimeout(() => {
+          if (!gameActive) return;
+          generateNextLetter();
+          acceptingInput = true;
+        }, 700);
+      } else {
+        mistakeCount++;
+        elements.letterDisplay.className = 'letter-display font-arial incorrect';
+        elements.errorSound.currentTime = 0;
+        elements.errorSound.play();
+        updateAccuracy();
+        setTimeout(() => {
+          if (!gameActive) return;
+          if (currentLevel === 2) {
+            elements.letterDisplay.textContent = '';
+            elements.letterDisplay.className = 'letter-display font-arial hidden';
+          } else {
+            elements.letterDisplay.className = 'letter-display font-arial';
+          }
+          speak(currentLetter);
+          acceptingInput = true;
+        }, 700);
+      }
+    });
+    
+    elements.nameInput.addEventListener('keydown', async (e) => {
+      if (!gameActive || currentLevel !== 3 || e.key !== 'Enter') return;
+      e.preventDefault();
+      
+      isSpelling = false;
+      speechSynthesis.cancel();
+      if (spellingTimer) {
+        clearTimeout(spellingTimer);
+        spellingTimer = null;
+      }
+      
+      const input = elements.nameInput.value.trim();
+      
+      if (input.toLowerCase() === currentName.toLowerCase()) {
+        correctCount++;
+        namesCompleted++;
+        elements.nameInput.className = 'name-input correct';
+        elements.successSound.currentTime = 0;
+        elements.successSound.play();
+        updateAccuracy();
+        setTimeout(() => {
+          if (!gameActive) return;
+          elements.nameInput.value = '';
+          elements.nameInput.className = 'name-input';
+          generateNextName();
+        }, 1200);
+      } else {
+        mistakeCount++;
+        elements.nameInput.className = 'name-input incorrect';
+        elements.errorSound.currentTime = 0;
+        elements.errorSound.play();
+        updateAccuracy();
+        
+        await new Promise(resolve => {
+          elements.errorSound.onended = resolve;
+          setTimeout(resolve, 1500);
+        });
+        
+        if (!gameActive || currentLevel !== 3) return;
+        elements.nameInput.value = '';
+        elements.nameInput.className = 'name-input';
+        spellingIndex = 0;
+        isSpelling = true;
+        spellOutName();
+      }
+    });
+    
+    elements.nameInput.addEventListener('click', () => {
+      if (gameActive && currentLevel === 3) {
+        isSpelling = false;
+        if (spellingTimer) {
+          clearTimeout(spellingTimer);
+          spellingTimer = null;
+        }
+        speechSynthesis.cancel();
+        spellingIndex = 0;
+        isSpelling = true;
+        spellOutName();
+      }
+    });
+    
+    function endGame() {
+      cleanup();
+      const total = correctCount + mistakeCount;
+      const acc = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+      document.getElementById('finalAccuracy').textContent = acc + '%';
+      document.getElementById('finalCorrect').textContent = correctCount;
+      document.getElementById('finalMistakes').textContent = mistakeCount;
+      
+      if (currentLevel === 3) {
+        document.getElementById('finalNamesDiv').style.display = 'block';
+        document.getElementById('finalNames').textContent = namesCompleted;
+      } else {
+        document.getElementById('finalNamesDiv').style.display = 'none';
+      }
+      
+      elements.gameScreen.style.display = 'none';
+      elements.resultScreen.style.display = 'block';
+    }
+    
+    function quitGame() {
+      cleanup();
+      location.reload();
+    }
+    
+    function resetGame() {
+      cleanup();
+      location.reload();
+    }
+  </script>
 </body>
 </html>
